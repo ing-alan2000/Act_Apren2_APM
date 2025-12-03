@@ -4,6 +4,7 @@
     <title>Elementos flotantes</title>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <style type="text/css">
+        /* Estilos originales exactos */
         div#contenedor {
             border: 1px solid black;
             margin: 5px;
@@ -23,6 +24,44 @@
             font-size: 16px;
             text-align: justify;
         }
+        
+        /* Estilos adicionales solo para el botón */
+        .boton-container {
+            margin: 5px;
+            width: 550px;
+            text-align: center;
+        }
+        
+        .boton-video {
+            background: linear-gradient(to bottom, #007AFF, #0056CC);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 122, 255, 0.3);
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: 0.5px;
+        }
+        
+        .boton-video:hover {
+            background: linear-gradient(to bottom, #0056CC, #0047AB);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 122, 255, 0.4);
+        }
+        
+        .boton-video:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 122, 255, 0.3);
+        }
+        
+        .boton-video:after {
+            content: ' ▶';
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -32,5 +71,85 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec volutpat diam non urna cursus, sit amet rhoncus ligula venenatis. Mauris mollis quam sapien, vitae facilisis orci ornare id. Donec in pulvinar lectus. Sed sit amet libero sit amet eros luctus ullamcorper. Nam odio elit, aliquet quis tristique eu, consectetur nec leo. In ut nisi et lacus henderit facilisis non vel diam. Vestibulum pellentesque lacinia magna, et feugiat felis dictum vel. Praesent elementum urna feugiat volutpat mattis. Praesent sodales sapien id scelerisque viverra. Morbi vel mauris orci. Donec in egestas orci, vel placerat quam. Mauris euismod ut ipsum eget iaculis. Proin urna turpis, blandit vitae nisi ac, ultrices gravida nunc. Ut vehicula eros in ipsum egestas ultricies. Mauris ut mauris justo. Mauris ultricies magna sed
         </div>
     </div>
+    
+    <div class="boton-container">
+        <button class="boton-video" onclick="window.open('https://youtu.be/VJefrquJXhc', '_blank')">
+            Presione para ver el video de esta actividad
+        </button>
+    </div>
+    
+    <script type="text/javascript">
+        // Script para mejorar la experiencia del botón
+        document.addEventListener('DOMContentLoaded', function() {
+            const boton = document.querySelector('.boton-video');
+            
+            // Efecto de pulso sutil
+            function animarBoton() {
+                boton.style.transform = 'scale(1.05)';
+                boton.style.boxShadow = '0 6px 20px rgba(0, 122, 255, 0.5)';
+                
+                setTimeout(function() {
+                    boton.style.transform = 'scale(1)';
+                    boton.style.boxShadow = '0 4px 10px rgba(0, 122, 255, 0.3)';
+                }, 300);
+            }
+            
+            // Animación al cargar la página
+            setTimeout(animarBoton, 1000);
+            
+            // Efecto de confeti simple al hacer clic
+            boton.addEventListener('click', function(e) {
+                // Efecto visual de clic
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+                
+                // Crear elementos de confeti simples
+                for(let i = 0; i < 8; i++) {
+                    setTimeout(function() {
+                        crearConfeti(e.clientX, e.clientY);
+                    }, i * 50);
+                }
+            });
+            
+            function crearConfeti(x, y) {
+                const confeti = document.createElement('div');
+                confeti.style.position = 'fixed';
+                confeti.style.width = '8px';
+                confeti.style.height = '8px';
+                confeti.style.backgroundColor = ['#007AFF', '#34C759', '#FF9500', '#FF3B30'][Math.floor(Math.random() * 4)];
+                confeti.style.borderRadius = '2px';
+                confeti.style.left = (x - 4) + 'px';
+                confeti.style.top = (y - 4) + 'px';
+                confeti.style.zIndex = '9999';
+                confeti.style.pointerEvents = 'none';
+                document.body.appendChild(confeti);
+                
+                // Animación
+                let angle = Math.random() * Math.PI * 2;
+                let speed = 2 + Math.random() * 2;
+                let velX = Math.cos(angle) * speed;
+                let velY = Math.sin(angle) * speed;
+                let posX = x - 4;
+                let posY = y - 4;
+                
+                const animacion = setInterval(function() {
+                    posX += velX;
+                    posY += velY;
+                    velY += 0.1; // Gravedad
+                    
+                    confeti.style.left = posX + 'px';
+                    confeti.style.top = posY + 'px';
+                    confeti.style.opacity = parseFloat(confeti.style.opacity || 1) - 0.02;
+                    
+                    if (parseFloat(confeti.style.opacity) <= 0) {
+                        clearInterval(animacion);
+                        confeti.remove();
+                    }
+                }, 16);
+            }
+        });
+    </script>
 </body>
 </html>
